@@ -4,6 +4,8 @@
 #include "Puzzle.h"
 #include "base\Texts.h"
 
+constexpr int PADDING = 10.0;
+
 Puzzle::Puzzle()
 	: Game(),
 		numbersFontId(0),
@@ -49,8 +51,8 @@ void Puzzle::InitializeMatrix(int iRows, int iColumns)
 void Puzzle::LayoutMatrix(int iW, int iH)
 {
 	//TODO:
-	matrixPositionX = 20.0;
-	matrixPositionY = 20.0;
+	matrixPositionX = PADDING;
+	matrixPositionY = PADDING;
 	cellWidth = 100.0;
 	cellHeight = 100.0;
 }
