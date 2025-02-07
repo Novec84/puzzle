@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Puzzle.cpp" />
+    <ClCompile Include="base\Application.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Font.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Texts.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Window.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Puzzle.h" />
+    <ClInclude Include="base\Application.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Font.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Game.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\KeyCode.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Texts.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Window.h">
+      <Filter>base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{9f7771e5-9aa1-480c-9967-ea8c0a0085aa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
