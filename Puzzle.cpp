@@ -14,7 +14,8 @@ Puzzle::Puzzle()
 		matrixPositionX(0.0),
 		matrixPositionY(0.0),
 		cellWidth(0.0),
-		cellHeight(0.0)
+		cellHeight(0.0),
+		dayMode(false)
 {
 
 }
@@ -69,8 +70,6 @@ void Puzzle::Init(int iW, int iH)
 {
 	InitializeMatrix(5, 5);
 	LayoutMatrix(iW, iH);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Puzzle::Resize(int iW, int iH)
@@ -87,8 +86,17 @@ void Puzzle::Resize(int iW, int iH)
 
 void Puzzle::Draw()
 {
+	if (dayMode)
+	{
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glColor3d(0.0, 0.0, 0.0);
+	}
+	else
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glColor3d(1.0, 1.0, 1.0);
+	}
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3d(1.0, 1.0, 1.0);
 
 	glPushMatrix();
 		glTranslated(matrixPositionX, matrixPositionY, 0.0);

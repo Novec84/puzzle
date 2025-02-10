@@ -20,11 +20,15 @@ class Puzzle :public Game
 	double cellWidth;
 	double cellHeight;
 
+	bool dayMode;
+
 	void InitializeMatrix(int iRows, int iColumns);
 	void LayoutMatrix(int iW, int iH);
 public:
 	Puzzle();
 	virtual ~Puzzle();
+
+	void SetDayMode(bool newDayMode) { dayMode = newDayMode; }
 
 	virtual void Init(int iW, int iH) override;
 	virtual void Resize(int iW, int iH) override;
