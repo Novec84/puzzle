@@ -277,3 +277,42 @@ void Puzzle::MouseLeftUp(int xPos, int yPos)
 		matrix[cellY][cellX] = 0;
 	}
 }
+
+void Puzzle::KeyDown(KeyCode keyCode)
+{
+	int row, column;
+	if (!GetCurrentPosition(row, column))
+		return;
+	switch (keyCode)
+	{
+	case KeyCode::ARROWLEFT:
+		if (column > 0)
+		{
+			matrix[row][column] = matrix[row][column - 1];
+			matrix[row][column - 1] = 0;
+		}
+		break;
+	case KeyCode::ARROWRIGHT:
+		if (column < columnCount - 1)
+		{
+			matrix[row][column] = matrix[row][column + 1];
+			matrix[row][column + 1] = 0;
+		}
+		break;
+	case KeyCode::ARROWUP:
+		if (row > 0)
+		{
+			matrix[row][column] = matrix[row - 1][column];
+			matrix[row - 1][column] = 0;
+		}
+		break;
+	case KeyCode::ARROWDOWN:
+		if (row < rowCount - 1)
+		{
+			matrix[row][column] = matrix[row + 1][column];
+			matrix[row + 1][column] = 0;
+		}
+		break;
+	}
+
+}

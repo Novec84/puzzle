@@ -47,6 +47,6 @@ public:
 	virtual void MouseRightUp(int xPos, int yPos) override {};
 	virtual void MouseMove(int xPos, int yPos) override {};
 
-	virtual void KeyDown(KeyCode keyCode) override {};
+	virtual void KeyDown(KeyCode keyCode) override;
 	virtual void KeyUp(KeyCode keyCode) override {};
 };
