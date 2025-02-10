@@ -21,6 +21,7 @@ class Puzzle :public Game
 	double cellHeight;
 
 	bool dayMode;
+	bool drawGrid;
 
 	void InitializeMatrix(int iRows, int iColumns);
 	void LayoutMatrix(int iW, int iH);
@@ -29,6 +30,7 @@ public:
 	virtual ~Puzzle();
 
 	void SetDayMode(bool newDayMode) { dayMode = newDayMode; }
+	void SetDrawGrid(bool newDrawGrid) { drawGrid = newDrawGrid; }
 
 	virtual void Init(int iW, int iH) override;
 	virtual void Resize(int iW, int iH) override;

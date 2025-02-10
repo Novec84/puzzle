@@ -15,7 +15,8 @@ Puzzle::Puzzle()
 		matrixPositionY(0.0),
 		cellWidth(0.0),
 		cellHeight(0.0),
-		dayMode(false)
+		dayMode(false),
+		drawGrid(true)
 {
 
 }
@@ -116,13 +117,16 @@ void Puzzle::Draw()
 					}
 					else
 					{
-						glBegin(GL_LINE_STRIP);
-							glVertex2d(0.0, 0.0);
-							glVertex2d(cellWidth, 0.0);
-							glVertex2d(cellWidth, cellHeight);
-							glVertex2d(0.0, cellHeight);
-							glVertex2d(0.0, 0.0);
-						glEnd();
+						if (drawGrid)
+						{
+							glBegin(GL_LINE_STRIP);
+								glVertex2d(0.0, 0.0);
+								glVertex2d(cellWidth, 0.0);
+								glVertex2d(cellWidth, cellHeight);
+								glVertex2d(0.0, cellHeight);
+								glVertex2d(0.0, 0.0);
+							glEnd();
+						}
 
 						//TODO: image
 						double textHeight = Texts::GetTextHeight(numbersFontId);
