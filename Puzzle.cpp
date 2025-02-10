@@ -258,32 +258,32 @@ void Puzzle::Draw()
 
 void Puzzle::MouseLeftUp(int xPos, int yPos)
 {
-	int cellX = (int)((xPos - matrixPositionX) / cellWidth);
-	int cellY = (int)((yPos - matrixPositionY) / cellHeight);
+	int row = (int)((yPos - matrixPositionY) / cellHeight);
+	int column = (int)((xPos - matrixPositionX) / cellWidth);
 
-	if ((cellX < 0) || (cellX >= columnCount) || (cellY < 0) || (cellY >= rowCount))
+	if ((column < 0) || (column >= columnCount) || (row < 0) || (row >= rowCount))
 		return;
 
-	if ((cellX > 0) && (matrix[cellY][cellX - 1] == 0))
+	if ((column > 0) && (matrix[row][column - 1] == 0))
 	{
-		matrix[cellY][cellX - 1] = matrix[cellY][cellX];
-		matrix[cellY][cellX] = 0;
+		matrix[row][column - 1] = matrix[row][column];
+		matrix[row][column] = 0;
 	}
-	if ((cellX < columnCount - 1) && (matrix[cellY][cellX + 1] == 0))
+	if ((column < columnCount - 1) && (matrix[row][column + 1] == 0))
 	{
-		matrix[cellY][cellX + 1] = matrix[cellY][cellX];
-		matrix[cellY][cellX] = 0;
+		matrix[row][column + 1] = matrix[row][column];
+		matrix[row][column] = 0;
 	}
 
-	if ((cellY > 0) && (matrix[cellY - 1][cellX] == 0))
+	if ((row > 0) && (matrix[row - 1][column] == 0))
 	{
-		matrix[cellY - 1][cellX] = matrix[cellY][cellX];
-		matrix[cellY][cellX] = 0;
+		matrix[row - 1][column] = matrix[row][column];
+		matrix[row][column] = 0;
 	}
-	if ((cellY < rowCount - 1) && (matrix[cellY + 1][cellX] == 0))
+	if ((row < rowCount - 1) && (matrix[row + 1][column] == 0))
 	{
-		matrix[cellY + 1][cellX] = matrix[cellY][cellX];
-		matrix[cellY][cellX] = 0;
+		matrix[row + 1][column] = matrix[row][column];
+		matrix[row][column] = 0;
 	}
 }
 
