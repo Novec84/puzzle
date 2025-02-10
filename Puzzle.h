@@ -2,7 +2,9 @@
 
 #include "base\Game.h"
 
+constexpr int MINROWS = 3;
 constexpr int MAXROWS = 10;
+constexpr int MINCOLUMNS = 3;
 constexpr int MAXCOLUMNS = 10;
 
 class Puzzle :public Game

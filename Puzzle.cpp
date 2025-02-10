@@ -4,7 +4,7 @@
 #include "Puzzle.h"
 #include "base\Texts.h"
 
-constexpr int PADDING = 10.0;
+constexpr double PADDING = 10.0;
 
 Puzzle::Puzzle()
 	: Game(),
@@ -26,14 +26,14 @@ Puzzle::~Puzzle()
 
 void Puzzle::InitializeMatrix(int iRows, int iColumns)
 {
-	if (iRows < 0)
-		iRows = 0;
+	if (iRows < MINROWS)
+		iRows = MINROWS;
 	if (iRows > MAXROWS)
 		iRows = MAXROWS;
 	rowCount = iRows;
 
-	if (iColumns < 0)
-		iColumns = 0;
+	if (iColumns < MINCOLUMNS)
+		iColumns = MINCOLUMNS;
 	if (iColumns > MAXCOLUMNS)
 		iColumns = MAXCOLUMNS;
 	columnCount = iColumns;
@@ -50,19 +50,25 @@ void Puzzle::InitializeMatrix(int iRows, int iColumns)
 
 void Puzzle::LayoutMatrix(int iW, int iH)
 {
-	//TODO:
+	//TODO: image
 	matrixPositionX = PADDING;
 	matrixPositionY = PADDING;
-	cellWidth = 100.0;
-	cellHeight = 100.0;
+	cellWidth = (iW - 2 * PADDING) / columnCount;
+	cellHeight = (iH - 2 * PADDING) / rowCount;
+
+	int numbersHeight = ((int)((cellWidth < cellHeight) ? cellWidth : cellHeight)) / 2;
+	if ((!numbersFontId) || (Texts::GetTextHeight(numbersFontId) != numbersHeight))
+	{
+		if (numbersFontId)
+			Texts::DestroyFont(numbersFontId);
+		numbersFontId = Texts::CreateFont(L"Arial", numbersHeight, true, false, false, false);
+	}
 }
 
 void Puzzle::Init(int iW, int iH)
 {
 	InitializeMatrix(5, 5);
 	LayoutMatrix(iW, iH);
-
-	numbersFontId = Texts::CreateFontW(L"Arial", 20, true, false, false, false);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
@@ -82,7 +88,7 @@ void Puzzle::Resize(int iW, int iH)
 void Puzzle::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3d(.5, .5, .5);
+	glColor3d(1.0, 1.0, 1.0);
 
 	glPushMatrix();
 		glTranslated(matrixPositionX, matrixPositionY, 0.0);
@@ -110,7 +116,7 @@ void Puzzle::Draw()
 							glVertex2d(0.0, 0.0);
 						glEnd();
 
-						//TODO:
+						//TODO: image
 						double textHeight = Texts::GetTextHeight(numbersFontId);
 						Texts::DrawTextW(
 							numbersFontId,
