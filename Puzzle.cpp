@@ -135,5 +135,31 @@ void Puzzle::Draw()
 
 void Puzzle::MouseLeftUp(int xPos, int yPos)
 {
+	int cellX = (int)((xPos - matrixPositionX) / cellWidth);
+	int cellY = (int)((yPos - matrixPositionY) / cellHeight);
 
+	if ((cellX < 0) || (cellX >= columnCount) || (cellY < 0) || (cellY >= rowCount))
+		return;
+
+	if ((cellX > 0) && (matrix[cellY][cellX - 1] == 0))
+	{
+		matrix[cellY][cellX - 1] = matrix[cellY][cellX];
+		matrix[cellY][cellX] = 0;
+	}
+	if ((cellX < columnCount - 1) && (matrix[cellY][cellX + 1] == 0))
+	{
+		matrix[cellY][cellX + 1] = matrix[cellY][cellX];
+		matrix[cellY][cellX] = 0;
+	}
+
+	if ((cellY > 0) && (matrix[cellY - 1][cellX] == 0))
+	{
+		matrix[cellY - 1][cellX] = matrix[cellY][cellX];
+		matrix[cellY][cellX] = 0;
+	}
+	if ((cellY < rowCount - 1) && (matrix[cellY + 1][cellX] == 0))
+	{
+		matrix[cellY + 1][cellX] = matrix[cellY][cellX];
+		matrix[cellY][cellX] = 0;
+	}
 }
