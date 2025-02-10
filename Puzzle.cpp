@@ -6,6 +6,11 @@
 #include "Puzzle.h"
 #include "base\Texts.h"
 
+constexpr bool DEFAULTDAYMODE = false;
+constexpr bool DEFAULTDRAWGRID = true;
+
+constexpr double PADDING = 10.0;
+
 enum StepDirection
 {
 	INVALID,
@@ -16,8 +21,6 @@ enum StepDirection
 	DOWN
 };
 
-constexpr double PADDING = 10.0;
-
 Puzzle::Puzzle()
 	: Game(),
 		numbersFontId(0),
@@ -27,8 +30,8 @@ Puzzle::Puzzle()
 		matrixPositionY(0.0),
 		cellWidth(0.0),
 		cellHeight(0.0),
-		dayMode(false),
-		drawGrid(true)
+		dayMode(DEFAULTDAYMODE),
+		drawGrid(DEFAULTDRAWGRID)
 {
 
 }
@@ -312,6 +315,14 @@ void Puzzle::KeyDown(KeyCode keyCode)
 			matrix[row][column] = matrix[row + 1][column];
 			matrix[row + 1][column] = 0;
 		}
+		break;
+	case KEY_G:
+		drawGrid = !drawGrid;
+		break;
+	case KEY_M:
+		dayMode = !dayMode;
+		break;
+	default:
 		break;
 	}
 

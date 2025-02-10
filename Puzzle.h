@@ -33,9 +33,6 @@ public:
 	Puzzle();
 	virtual ~Puzzle();
 
-	void SetDayMode(bool newDayMode) { dayMode = newDayMode; }
-	void SetDrawGrid(bool newDrawGrid) { drawGrid = newDrawGrid; }
-
 	virtual void Init(int iW, int iH) override;
 	virtual void Resize(int iW, int iH) override;
 	virtual void Draw() override;

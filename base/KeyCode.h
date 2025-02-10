@@ -7,6 +7,8 @@ enum KeyCode
 	ARROWUP,
 	ARROWDOWN,
 	SPACE,
+	KEY_G,
+	KEY_M,
 
 	UNSUPPORTED
 };

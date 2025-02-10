@@ -19,6 +19,10 @@ KeyCode RemapKeyCode(WPARAM winKeyCode)
 		return ARROWDOWN;
 	case VK_SPACE:
 		return SPACE;
+	case 'G':
+		return KEY_G;
+	case 'M':
+		return KEY_M;
 	default:
 		break;
 	}
