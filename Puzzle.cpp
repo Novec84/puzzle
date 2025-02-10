@@ -1,8 +1,20 @@
+#include <vector>
+
 #include <Windows.h>
 #include <gl\GL.h>
 
 #include "Puzzle.h"
 #include "base\Texts.h"
+
+enum StepDirection
+{
+	INVALID,
+
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+};
 
 constexpr double PADDING = 10.0;
 
@@ -50,6 +62,20 @@ void Puzzle::InitializeMatrix(int iRows, int iColumns)
 		matrix[rowCount - 1][columnCount - 1] = 0;
 }
 
+bool Puzzle::GetCurrentPosition(int& iRow, int& iColumn)
+{
+	int row, column;
+	for(row = 0;row< rowCount;row++)
+		for(column = 0;column < columnCount;column++)
+			if (matrix[row][column] == 0)
+			{
+				iRow = row;
+				iColumn = column;
+				return true;
+			}
+	return false;
+}
+
 void Puzzle::LayoutMatrix(int iW, int iH)
 {
 	//TODO: image
@@ -86,9 +112,66 @@ bool Puzzle::IsResolved()
 	return true;
 }
 
+void Puzzle::Shuffle(int steps)
+{
+	std::vector<StepDirection> possibleSteps;
+	int row, column;
+	if (!GetCurrentPosition(row, column))
+		return;
+	StepDirection forbiddenStep = StepDirection::INVALID;
+	while (steps > 0)
+	{
+		steps--;
+		
+		possibleSteps.clear();
+		if ((column > 0) && (forbiddenStep != StepDirection::LEFT))
+			possibleSteps.push_back(StepDirection::LEFT);
+		if ((column < columnCount - 1) && (forbiddenStep != StepDirection::RIGHT))
+			possibleSteps.push_back(StepDirection::RIGHT);
+		if ((row > 0) && (forbiddenStep != StepDirection::UP))
+			possibleSteps.push_back(StepDirection::UP);
+		if ((row < columnCount - 1) && (forbiddenStep != StepDirection::DOWN))
+			possibleSteps.push_back(StepDirection::DOWN);
+		
+		if (possibleSteps.size() == 0)
+			return;
+		int nextStep = rand() % possibleSteps.size();
+		switch (possibleSteps[nextStep])
+		{
+		case StepDirection::LEFT:
+			matrix[row][column] = matrix[row][column - 1];
+			column--;
+			matrix[row][column] = 0;
+			forbiddenStep = StepDirection::RIGHT;
+			break;
+		case StepDirection::RIGHT:
+			matrix[row][column] = matrix[row][column + 1];
+			column++;
+			matrix[row][column] = 0;
+			forbiddenStep = StepDirection::LEFT;
+			break;
+		case StepDirection::UP:
+			matrix[row][column] = matrix[row - 1][column];
+			row--;
+			matrix[row][column] = 0;
+			forbiddenStep = StepDirection::DOWN;
+			break;
+		case StepDirection::DOWN:
+			matrix[row][column] = matrix[row + 1][column];
+			row++;
+			matrix[row][column] = 0;
+			forbiddenStep = StepDirection::UP;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void Puzzle::Init(int iW, int iH)
 {
 	InitializeMatrix(5, 5);
+	Shuffle(50);
 	LayoutMatrix(iW, iH);
 }
 

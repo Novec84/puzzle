@@ -24,9 +24,11 @@ class Puzzle :public Game
 	bool drawGrid;
 
 	void InitializeMatrix(int iRows, int iColumns);
+	bool GetCurrentPosition(int& iRow, int& iColumn);
 	void LayoutMatrix(int iW, int iH);
 
 	bool IsResolved();
+	void Shuffle(int steps);
 public:
 	Puzzle();
 	virtual ~Puzzle();
