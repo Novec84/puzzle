@@ -26,6 +26,8 @@ Puzzle::Puzzle()
 		numbersFontId(0),
 		rowCount(0),
 		columnCount(0),
+		surfaceWidth(0.0),
+		surfaceHeight(0.0),
 		matrixPositionX(0.0),
 		matrixPositionY(0.0),
 		cellWidth(0.0),
@@ -79,13 +81,13 @@ bool Puzzle::GetCurrentPosition(int& iRow, int& iColumn)
 	return false;
 }
 
-void Puzzle::LayoutMatrix(int iW, int iH)
+void Puzzle::LayoutMatrix()
 {
 	//TODO: image
 	matrixPositionX = PADDING;
 	matrixPositionY = PADDING;
-	cellWidth = (iW - 2 * PADDING) / columnCount;
-	cellHeight = (iH - 2 * PADDING) / rowCount;
+	cellWidth = (surfaceWidth - 2 * PADDING) / columnCount;
+	cellHeight = (surfaceHeight - 2 * PADDING) / rowCount;
 
 	int numbersHeight = ((int)((cellWidth < cellHeight) ? cellWidth : cellHeight)) / 2;
 	if ((!numbersFontId) || (Texts::GetTextHeight(numbersFontId) != numbersHeight))
@@ -173,14 +175,18 @@ void Puzzle::Shuffle(int steps)
 
 void Puzzle::Init(int iW, int iH)
 {
+	surfaceWidth = iW;
+	surfaceHeight = iH;
 	InitializeMatrix(5, 5);
 	Shuffle(50);
-	LayoutMatrix(iW, iH);
+	LayoutMatrix();
 }
 
 void Puzzle::Resize(int iW, int iH)
 {
-	LayoutMatrix(iW, iH);
+	surfaceWidth = iW;
+	surfaceHeight = iH;
+	LayoutMatrix();
 
 	glViewport(0, 0, iW, iH);
 	glMatrixMode(GL_PROJECTION);

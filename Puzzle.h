@@ -15,6 +15,8 @@ class Puzzle :public Game
 	int rowCount;
 	int columnCount;
 
+	double surfaceWidth;
+	double surfaceHeight;
 	double matrixPositionX;
 	double matrixPositionY;
 	double cellWidth;
@@ -25,7 +27,7 @@ class Puzzle :public Game
 
 	void InitializeMatrix(int iRows, int iColumns);
 	bool GetCurrentPosition(int& iRow, int& iColumn);
-	void LayoutMatrix(int iW, int iH);
+	void LayoutMatrix();
 
 	bool IsResolved();
 	void Shuffle(int steps);
