@@ -67,6 +67,25 @@ void Puzzle::LayoutMatrix(int iW, int iH)
 	}
 }
 
+bool Puzzle::IsResolved()
+{
+	int index = 0;
+	int row, column;
+	for(row = 0; row < rowCount; row++)
+		for (column = 0; column < columnCount; column++)
+			if ((row == rowCount - 1) && (column == columnCount))
+			{
+				if (matrix[row][column] != 0)
+					return false;
+			}
+			else
+			{
+				if (matrix[row][column] != ++index)
+					return false;
+			}
+	return true;
+}
+
 void Puzzle::Init(int iW, int iH)
 {
 	InitializeMatrix(5, 5);

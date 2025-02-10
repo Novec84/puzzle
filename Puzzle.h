@@ -25,6 +25,8 @@ class Puzzle :public Game
 
 	void InitializeMatrix(int iRows, int iColumns);
 	void LayoutMatrix(int iW, int iH);
+
+	bool IsResolved();
 public:
 	Puzzle();
 	virtual ~Puzzle();
