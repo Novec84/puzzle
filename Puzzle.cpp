@@ -4,6 +4,8 @@
 #include "Puzzle.h"
 #include "base\Texts.h"
 
+constexpr int DEFAULTROWS = 5;
+constexpr int DEFAULTCOLUMNS = 5;
 constexpr bool DEFAULTDAYMODE = false;
 constexpr bool DEFAULTDRAWGRID = true;
 
@@ -176,8 +178,8 @@ void Puzzle::Init(int iW, int iH)
 {
 	surfaceWidth = iW;
 	surfaceHeight = iH;
-	InitializeMatrix(5, 5);
-	Shuffle(50);
+	InitializeMatrix(DEFAULTROWS, DEFAULTCOLUMNS);
+	Shuffle(rowCount*columnCount*2);
 	LayoutMatrix();
 }
 
