@@ -104,7 +104,7 @@ bool Puzzle::IsResolved()
 	int row, column;
 	for(row = 0; row < rowCount; row++)
 		for (column = 0; column < columnCount; column++)
-			if ((row == rowCount - 1) && (column == columnCount))
+			if ((row == rowCount - 1) && (column == columnCount - 1))
 			{
 				if (matrix[row][column] != 0)
 					return false;
@@ -135,7 +135,7 @@ void Puzzle::Shuffle(int steps)
 			possibleSteps.push_back(StepDirection::RIGHT);
 		if ((row > 0) && (forbiddenStep != StepDirection::UP))
 			possibleSteps.push_back(StepDirection::UP);
-		if ((row < columnCount - 1) && (forbiddenStep != StepDirection::DOWN))
+		if ((row < rowCount - 1) && (forbiddenStep != StepDirection::DOWN))
 			possibleSteps.push_back(StepDirection::DOWN);
 		
 		if (possibleSteps.size() == 0)
