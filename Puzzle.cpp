@@ -1,5 +1,3 @@
-#include <vector>
-
 #include <Windows.h>
 #include <gl\GL.h>
 
@@ -119,7 +117,8 @@ bool Puzzle::IsResolved()
 
 void Puzzle::Shuffle(int steps)
 {
-	std::vector<StepDirection> possibleSteps;
+	StepDirection possibleSteps[4];
+	int possibleStepsCount;
 	int row, column;
 	if (!GetCurrentPosition(row, column))
 		return;
@@ -128,19 +127,19 @@ void Puzzle::Shuffle(int steps)
 	{
 		steps--;
 		
-		possibleSteps.clear();
+		possibleStepsCount = 0;
 		if ((column > 0) && (forbiddenStep != StepDirection::LEFT))
-			possibleSteps.push_back(StepDirection::LEFT);
+			possibleSteps[possibleStepsCount++] = StepDirection::LEFT;
 		if ((column < columnCount - 1) && (forbiddenStep != StepDirection::RIGHT))
-			possibleSteps.push_back(StepDirection::RIGHT);
+			possibleSteps[possibleStepsCount++] = StepDirection::RIGHT;
 		if ((row > 0) && (forbiddenStep != StepDirection::UP))
-			possibleSteps.push_back(StepDirection::UP);
+			possibleSteps[possibleStepsCount++] = StepDirection::UP;
 		if ((row < rowCount - 1) && (forbiddenStep != StepDirection::DOWN))
-			possibleSteps.push_back(StepDirection::DOWN);
+			possibleSteps[possibleStepsCount++] = StepDirection::DOWN;
 		
-		if (possibleSteps.size() == 0)
+		if (possibleStepsCount == 0)
 			return;
-		int nextStep = rand() % possibleSteps.size();
+		int nextStep = rand() % possibleStepsCount;
 		switch (possibleSteps[nextStep])
 		{
 		case StepDirection::LEFT:
