@@ -28,6 +28,7 @@ class Puzzle :public Game
 
 	bool dayMode;
 	bool drawGrid;
+	bool solutionMode;
 
 	void InitializeMatrix(int iRows, int iColumns);
 	bool GetCurrentPosition(int& iRow, int& iColumn);
@@ -53,5 +54,5 @@ public:
 	virtual void MouseMove(int xPos, int yPos) override {};
 
 	virtual void KeyDown(KeyCode keyCode) override;
-	virtual void KeyUp(KeyCode keyCode) override {};
+	virtual void KeyUp(KeyCode keyCode) override;
 };

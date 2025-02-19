@@ -39,7 +39,8 @@ Puzzle::Puzzle()
 		textureWidth(0),
 		textureHeight(0),
 		dayMode(DEFAULTDAYMODE),
-		drawGrid(DEFAULTDRAWGRID)
+		drawGrid(DEFAULTDRAWGRID),
+		solutionMode(false)
 {
 
 }
@@ -258,7 +259,50 @@ void Puzzle::Draw()
 			glPushMatrix();
 				for (int column = 0; column < columnCount; column++)
 				{
-					if (matrix[row][column] == 0)
+					if (textureId)
+					{
+						double textureX = (solutionMode ? column : ((matrix[row][column] - 1) % rowCount)) * textureCellWidth;
+						double textureY = (solutionMode ? row : ((matrix[row][column] - 1) / rowCount)) * textureCellHeight;
+						glEnable(GL_TEXTURE_2D);
+						glBindTexture(GL_TEXTURE_2D, textureId);
+						glColor3d(1.0, 1.0, 1.0);
+						glBegin(GL_QUADS);
+							glTexCoord2d(textureX, textureY);
+							glVertex2d(0.0, 0.0);
+							glTexCoord2d(textureX + textureCellWidth, textureY);
+							glVertex2d(cellWidth, 0.0);
+							glTexCoord2d(textureX + textureCellWidth, textureY + textureCellHeight);
+							glVertex2d(cellWidth, cellHeight);
+							glTexCoord2d(textureX, textureY + textureCellHeight);
+							glVertex2d(0.0, cellHeight);
+						glEnd();
+						glDisable(GL_TEXTURE_2D);
+					}
+
+					if (drawGrid)
+					{
+						glColor3d(color[0], color[1], color[2]);
+						glBegin(GL_LINE_STRIP);
+							glVertex2d(0.0, 0.0);
+							glVertex2d(cellWidth, 0.0);
+							glVertex2d(cellWidth, cellHeight);
+							glVertex2d(0.0, cellHeight);
+							glVertex2d(0.0, 0.0);
+						glEnd();
+					}
+
+					if (!textureId)
+					{
+						int number = solutionMode ? row*columnCount + column + 1 : matrix[row][column];
+						glColor3d(color[0], color[1], color[2]);
+						double textHeight = Texts::GetTextHeight(numbersFontId);
+						Texts::DrawTextW(
+							numbersFontId,
+							(cellWidth - Texts::GetTextWidth(numbersFontId, "%d", number)) / 2.0,
+							(cellHeight + Texts::GetTextHeight(numbersFontId)) / 2.0,
+							"%d", number);
+					}
+					if ((!solutionMode) &&(matrix[row][column] == 0))
 					{
 						glColor3d(color[0], color[1], color[2]);
 						glBegin(GL_POLYGON);
@@ -267,51 +311,6 @@ void Puzzle::Draw()
 							glVertex2d(cellWidth, cellHeight);
 							glVertex2d(0.0, cellHeight);
 						glEnd();
-					}
-					else
-					{
-						if (textureId)
-						{
-							double textureX = ((matrix[row][column] - 1) % rowCount) * textureCellWidth;
-							double textureY = ((matrix[row][column] - 1) / rowCount) * textureCellHeight;
-							glEnable(GL_TEXTURE_2D);
-							glBindTexture(GL_TEXTURE_2D, textureId);
-							glColor3d(1.0, 1.0, 1.0);
-							glBegin(GL_QUADS);
-								glTexCoord2d(textureX, textureY);
-								glVertex2d(0.0, 0.0);
-								glTexCoord2d(textureX + textureCellWidth, textureY);
-								glVertex2d(cellWidth, 0.0);
-								glTexCoord2d(textureX + textureCellWidth, textureY + textureCellHeight);
-								glVertex2d(cellWidth, cellHeight);
-								glTexCoord2d(textureX, textureY + textureCellHeight);
-								glVertex2d(0.0, cellHeight);
-							glEnd();
-							glDisable(GL_TEXTURE_2D);
-						}
-
-						if (drawGrid)
-						{
-							glColor3d(color[0], color[1], color[2]);
-							glBegin(GL_LINE_STRIP);
-								glVertex2d(0.0, 0.0);
-								glVertex2d(cellWidth, 0.0);
-								glVertex2d(cellWidth, cellHeight);
-								glVertex2d(0.0, cellHeight);
-								glVertex2d(0.0, 0.0);
-							glEnd();
-						}
-
-						if (!textureId)
-						{
-							glColor3d(color[0], color[1], color[2]);
-							double textHeight = Texts::GetTextHeight(numbersFontId);
-							Texts::DrawTextW(
-								numbersFontId,
-								(cellWidth - Texts::GetTextWidth(numbersFontId, "%d", matrix[row][column])) / 2.0,
-								(cellHeight + Texts::GetTextHeight(numbersFontId)) / 2.0,
-								"%d", matrix[row][column]);
-						}
 					}
 					glTranslated(cellWidth, 0.0, 0.0);
 				}
@@ -387,6 +386,9 @@ void Puzzle::KeyDown(KeyCode keyCode)
 			matrix[row + 1][column] = 0;
 		}
 		break;
+	case SPACE:
+		solutionMode = true;
+		break;
 	case KEY_G:
 		drawGrid = !drawGrid;
 		break;
@@ -396,5 +398,16 @@ void Puzzle::KeyDown(KeyCode keyCode)
 	default:
 		break;
 	}
+}
 
+void Puzzle::KeyUp(KeyCode keyCode)
+{
+	switch (keyCode)
+	{
+	case SPACE:
+		solutionMode = false;
+		break;
+	default:
+		break;
+	}
 }
