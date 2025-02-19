@@ -32,6 +32,7 @@ int main()
 	application.GameLoop(&window, FPS);
 
 	window.Hide();
+	window.Deinit();
 	window.Destroy(CLASSNAME);
 
 	return 0;

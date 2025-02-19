@@ -155,6 +155,7 @@
     <ClInclude Include="base\Texts.h" />
     <ClInclude Include="base\Window.h" />
     <ClInclude Include="Puzzle.h" />
+    <ClInclude Include="stb\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -22,6 +22,10 @@ class Puzzle :public Game
 	double cellWidth;
 	double cellHeight;
 
+	unsigned textureId;
+	int textureWidth;
+	int textureHeight;
+
 	bool dayMode;
 	bool drawGrid;
 
@@ -31,11 +35,13 @@ class Puzzle :public Game
 
 	bool IsResolved();
 	void Shuffle(int steps);
+	void PrepareTexture(const char* fileName);
 public:
 	Puzzle();
 	virtual ~Puzzle();
 
 	virtual void Init(int iW, int iH) override;
+	virtual void Deinit() override;
 	virtual void Resize(int iW, int iH) override;
 	virtual void Draw() override;
 	virtual void Update() override {};

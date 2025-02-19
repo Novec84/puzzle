@@ -4,6 +4,9 @@
 #include "Puzzle.h"
 #include "base\Texts.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
 constexpr int DEFAULTROWS = 5;
 constexpr int DEFAULTCOLUMNS = 5;
 constexpr bool DEFAULTDAYMODE = false;
@@ -32,6 +35,9 @@ Puzzle::Puzzle()
 		matrixPositionY(0.0),
 		cellWidth(0.0),
 		cellHeight(0.0),
+		textureId(0),
+		textureWidth(0),
+		textureHeight(0),
 		dayMode(DEFAULTDAYMODE),
 		drawGrid(DEFAULTDRAWGRID)
 {
@@ -174,6 +180,28 @@ void Puzzle::Shuffle(int steps)
 	}
 }
 
+void Puzzle::PrepareTexture(const char* fileName)
+{
+	if (textureId)
+	{
+		glDeleteTextures(1, &textureId);
+		textureId = 0;
+	}
+
+	int channels;
+	unsigned char* image = stbi_load(fileName, &textureWidth, &textureHeight, &channels, STBI_rgb_alpha);
+	if (!image)
+		return;
+
+ 	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	stbi_image_free(image);
+}
+
 void Puzzle::Init(int iW, int iH)
 {
 	surfaceWidth = iW;
@@ -181,6 +209,15 @@ void Puzzle::Init(int iW, int iH)
 	InitializeMatrix(DEFAULTROWS, DEFAULTCOLUMNS);
 	Shuffle(rowCount*columnCount*2);
 	LayoutMatrix();
+}
+
+void Puzzle::Deinit()
+{
+	if (textureId)
+	{
+		glDeleteTextures(1, &textureId);
+		textureId = 0;
+	}
 }
 
 void Puzzle::Resize(int iW, int iH)
@@ -199,15 +236,18 @@ void Puzzle::Resize(int iW, int iH)
 
 void Puzzle::Draw()
 {
+	double textureCellWidth = 1.0 / columnCount;
+	double textureCellHeight = 1.0 / rowCount;
+	double color[3];
 	if (dayMode)
 	{
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glColor3d(0.0, 0.0, 0.0);
+		color[0] = color[1] = color[2] = 0.0;
 	}
 	else
 	{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glColor3d(1.0, 1.0, 1.0);
+		color[0] = color[1] = color[2] = 1.0;
 	}
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -220,6 +260,7 @@ void Puzzle::Draw()
 				{
 					if (matrix[row][column] == 0)
 					{
+						glColor3d(color[0], color[1], color[2]);
 						glBegin(GL_POLYGON);
 							glVertex2d(0.0, 0.0);
 							glVertex2d(cellWidth, 0.0);
@@ -229,8 +270,29 @@ void Puzzle::Draw()
 					}
 					else
 					{
+						if (textureId)
+						{
+							double textureX = ((matrix[row][column] - 1) % rowCount) * textureCellWidth;
+							double textureY = ((matrix[row][column] - 1) / rowCount) * textureCellHeight;
+							glEnable(GL_TEXTURE_2D);
+							glBindTexture(GL_TEXTURE_2D, textureId);
+							glColor3d(1.0, 1.0, 1.0);
+							glBegin(GL_QUADS);
+								glTexCoord2d(textureX, textureY);
+								glVertex2d(0.0, 0.0);
+								glTexCoord2d(textureX + textureCellWidth, textureY);
+								glVertex2d(cellWidth, 0.0);
+								glTexCoord2d(textureX + textureCellWidth, textureY + textureCellHeight);
+								glVertex2d(cellWidth, cellHeight);
+								glTexCoord2d(textureX, textureY + textureCellHeight);
+								glVertex2d(0.0, cellHeight);
+							glEnd();
+							glDisable(GL_TEXTURE_2D);
+						}
+
 						if (drawGrid)
 						{
+							glColor3d(color[0], color[1], color[2]);
 							glBegin(GL_LINE_STRIP);
 								glVertex2d(0.0, 0.0);
 								glVertex2d(cellWidth, 0.0);
@@ -240,14 +302,16 @@ void Puzzle::Draw()
 							glEnd();
 						}
 
-						//TODO: image
-						double textHeight = Texts::GetTextHeight(numbersFontId);
-						Texts::DrawTextW(
-							numbersFontId,
-							(cellWidth - Texts::GetTextWidth(numbersFontId, "%d", matrix[row][column])) / 2.0,
-							(cellHeight + Texts::GetTextHeight(numbersFontId)) / 2.0,
-							"%d", matrix[row][column]);
-
+						if (!textureId)
+						{
+							glColor3d(color[0], color[1], color[2]);
+							double textHeight = Texts::GetTextHeight(numbersFontId);
+							Texts::DrawTextW(
+								numbersFontId,
+								(cellWidth - Texts::GetTextWidth(numbersFontId, "%d", matrix[row][column])) / 2.0,
+								(cellHeight + Texts::GetTextHeight(numbersFontId)) / 2.0,
+								"%d", matrix[row][column]);
+						}
 					}
 					glTranslated(cellWidth, 0.0, 0.0);
 				}

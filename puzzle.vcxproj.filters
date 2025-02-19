@@ -36,10 +36,16 @@
     <ClInclude Include="base\Window.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="stb\stb_image.h">
+      <Filter>stb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="base">
       <UniqueIdentifier>{9f7771e5-9aa1-480c-9967-ea8c0a0085aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stb">
+      <UniqueIdentifier>{ab3cf974-dd67-4982-8246-7f57d7cd9cae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

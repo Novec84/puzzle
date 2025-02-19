@@ -38,6 +38,7 @@ public:
 	Error Create(const wchar_t* className, const wchar_t* title, int width, int height);
 	void Destroy(const wchar_t* className);
 	void Init(int iW, int iH);
+	void Deinit();
 	void Show();
 	void Hide();
 	void Resize(int iW, int iH);

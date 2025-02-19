@@ -241,6 +241,12 @@ void Window::Init(int iW, int iH)
 		game->Init(iW, iH);
 }
 
+void Window::Deinit()
+{
+	if (game)
+		game->Deinit();
+}
+
 void Window::Show()
 {
 	ShowWindow(hWnd, SW_SHOW);

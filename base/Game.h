@@ -9,6 +9,7 @@ public:
 	virtual ~Game() {}
 
 	virtual void Init(int iW, int iH) = 0;
+	virtual void Deinit() = 0;
 	virtual void Resize(int iW, int iH) = 0;
 	virtual void Draw() = 0;
 	virtual void Update() = 0;
