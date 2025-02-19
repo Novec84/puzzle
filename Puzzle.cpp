@@ -181,18 +181,32 @@ void Puzzle::Shuffle(int steps)
 	}
 }
 
-void Puzzle::PrepareTexture(const char* fileName)
+void Puzzle::SetTexture()
 {
-	if (textureId)
-	{
-		glDeleteTextures(1, &textureId);
-		textureId = 0;
-	}
+	OPENFILENAMEA openFileName;
+	char selectedFileName[256] = { 0 };
+
+	ZeroMemory(&openFileName, sizeof(openFileName));
+	openFileName.lStructSize = sizeof(openFileName);
+	openFileName.hwndOwner = NULL;
+	openFileName.lpstrFile = selectedFileName;
+	openFileName.nMaxFile = sizeof(selectedFileName);
+	openFileName.lpstrFilter = "All\0*.*\0BMP\0*.bmp\0JPG\0*.jpg\0PNG\0*.png\0";
+	openFileName.nFilterIndex = 1;
+	openFileName.lpstrFileTitle = NULL;
+	openFileName.nMaxFileTitle = 0;
+	openFileName.lpstrInitialDir = NULL;
+	openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (!GetOpenFileNameA(&openFileName))
+ 		return;
 
 	int channels;
-	unsigned char* image = stbi_load(fileName, &textureWidth, &textureHeight, &channels, STBI_rgb_alpha);
+	unsigned char* image = stbi_load(selectedFileName, &textureWidth, &textureHeight, &channels, STBI_rgb_alpha);
 	if (!image)
 		return;
+
+	DropTexture();
 
  	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
@@ -201,6 +215,15 @@ void Puzzle::PrepareTexture(const char* fileName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	stbi_image_free(image);
+}
+
+void Puzzle::DropTexture()
+{
+	if (textureId)
+	{
+		glDeleteTextures(1, &textureId);
+		textureId = 0;
+	}
 }
 
 void Puzzle::Init(int iW, int iH)
@@ -214,11 +237,7 @@ void Puzzle::Init(int iW, int iH)
 
 void Puzzle::Deinit()
 {
-	if (textureId)
-	{
-		glDeleteTextures(1, &textureId);
-		textureId = 0;
-	}
+	DropTexture();
 }
 
 void Puzzle::Resize(int iW, int iH)
@@ -394,6 +413,14 @@ void Puzzle::KeyDown(KeyCode keyCode)
 		break;
 	case KEY_M:
 		dayMode = !dayMode;
+		break;
+	case KEY_N:
+		DropTexture();
+		LayoutMatrix();
+		break;
+	case KEY_I:
+		SetTexture();
+		LayoutMatrix();
 		break;
 	default:
 		break;

@@ -36,7 +36,9 @@ class Puzzle :public Game
 
 	bool IsResolved();
 	void Shuffle(int steps);
-	void PrepareTexture(const char* fileName);
+	
+	void SetTexture();
+	void DropTexture();
 public:
 	Puzzle();
 	virtual ~Puzzle();

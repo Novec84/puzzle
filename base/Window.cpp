@@ -23,6 +23,10 @@ KeyCode RemapKeyCode(WPARAM winKeyCode)
 		return KEY_G;
 	case 'M':
 		return KEY_M;
+	case 'N':
+		return KEY_N;
+	case 'I':
+		return KEY_I;
 	default:
 		break;
 	}
