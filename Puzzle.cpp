@@ -12,7 +12,7 @@ constexpr int DEFAULTCOLUMNS = 5;
 constexpr bool DEFAULTDAYMODE = false;
 constexpr bool DEFAULTDRAWGRID = true;
 
-constexpr double PADDING = 10.0;
+constexpr double PADDING = 0.0;
 
 enum StepDirection
 {
