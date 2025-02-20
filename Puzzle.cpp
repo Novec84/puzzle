@@ -94,11 +94,11 @@ void Puzzle::LayoutMatrix()
 	double paddedSurfaceHeight = surfaceHeight - 2 * PADDING;
 	if (textureId)
 	{
-		double horizontalRatio = paddedSurfaceWidth / textureWidth;
-		double verticalRatio = paddedSurfaceHeight / textureHeight;
-		double ratio = (horizontalRatio < verticalRatio) ? horizontalRatio : verticalRatio;
-		double scaledWidth = textureWidth * ratio;
-		double scaledHeight = textureHeight * ratio;
+		double horizontalFactor = paddedSurfaceWidth / textureWidth;
+		double verticalFactor = paddedSurfaceHeight / textureHeight;
+		double factor = (horizontalFactor < verticalFactor) ? horizontalFactor : verticalFactor;
+		double scaledWidth = textureWidth * factor;
+		double scaledHeight = textureHeight * factor;
 		matrixPositionX = PADDING + (paddedSurfaceWidth - scaledWidth) / 2;
 		matrixPositionY = PADDING + (paddedSurfaceHeight - scaledHeight) / 2;
 		cellWidth = scaledWidth / columnCount;
