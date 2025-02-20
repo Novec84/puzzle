@@ -90,11 +90,27 @@ bool Puzzle::GetCurrentPosition(int& iRow, int& iColumn)
 
 void Puzzle::LayoutMatrix()
 {
-	//TODO: image
-	matrixPositionX = PADDING;
-	matrixPositionY = PADDING;
-	cellWidth = (surfaceWidth - 2 * PADDING) / columnCount;
-	cellHeight = (surfaceHeight - 2 * PADDING) / rowCount;
+	double paddedSurfaceWidth = surfaceWidth - 2 * PADDING;
+	double paddedSurfaceHeight = surfaceHeight - 2 * PADDING;
+	if (textureId)
+	{
+		double horizontalRatio = paddedSurfaceWidth / textureWidth;
+		double verticalRatio = paddedSurfaceHeight / textureHeight;
+		double ratio = (horizontalRatio < verticalRatio) ? horizontalRatio : verticalRatio;
+		double scaledWidth = textureWidth * ratio;
+		double scaledHeight = textureHeight * ratio;
+		matrixPositionX = PADDING + (paddedSurfaceWidth - scaledWidth) / 2;
+		matrixPositionY = PADDING + (paddedSurfaceHeight - scaledHeight) / 2;
+		cellWidth = scaledWidth / columnCount;
+		cellHeight = scaledHeight / rowCount;
+	}
+	else
+	{
+		matrixPositionX = PADDING;
+		matrixPositionY = PADDING;
+		cellWidth = paddedSurfaceWidth / columnCount;
+		cellHeight = paddedSurfaceHeight / rowCount;
+	}
 
 	int numbersHeight = ((int)((cellWidth < cellHeight) ? cellWidth : cellHeight)) / 2;
 	if ((!numbersFontId) || (Texts::GetTextHeight(numbersFontId) != numbersHeight))
@@ -321,7 +337,7 @@ void Puzzle::Draw()
 							(cellHeight + Texts::GetTextHeight(numbersFontId)) / 2.0,
 							"%d", number);
 					}
-					if ((!solutionMode) &&(matrix[row][column] == 0))
+					if ((!solutionMode) && (matrix[row][column] == 0))
 					{
 						glColor3d(color[0], color[1], color[2]);
 						glBegin(GL_POLYGON);
