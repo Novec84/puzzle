@@ -10,7 +10,7 @@
 constexpr int DEFAULTROWS = 5;
 constexpr int DEFAULTCOLUMNS = 5;
 constexpr bool DEFAULTDAYMODE = false;
-constexpr bool DEFAULTDRAWGRID = true;
+constexpr bool DEFAULTDRAWGRID = false;
 
 constexpr double PADDING = 0.0;
 
